@@ -7,23 +7,26 @@ const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
 
 const localStrategy = new LocalStrategy(
   {
-    usernameField: "phoneNumber",
+    usernameField: "email",
   },
-  async (phoneNumber, password, done) => {
+  async (username, password, done) => {
     try {
-      const user = await User.findOne({ phoneNumber: phoneNumber });
+      const user = await User.findOne({
+        // this lets user to authenticate using either email or username
+        $or: [{ phoneNumber: username }, { email: username }],
+      });
       if (!user) {
         return (
-          done(false, null),
+          done(null, false),
           {
-            message: "The phone number is wrong",
+            message: "Email or Phone Number are not found.",
           }
         );
       }
       const comparePassword = await bcrypt.compare(password, user.password);
       if (!comparePassword) {
-        return done(false, null, {
-          message: "The entered password is wrong",
+        return done(null, false, {
+          message: "The Entered Password is wrong",
         });
       }
       done(null, user);
@@ -39,13 +42,17 @@ const jwtStrategy = new JwtStrategy(
     secretOrKey: process.env.JWT_SECRET,
   },
   async (payload, done) => {
-    const user = await User.findOne({ _id: payload._id });
-    if (!user) {
-      return done(false, null);
+    try {
+      const user = await User.findOne({ _id: payload._id });
+      if (!user) {
+        return done(null, false);
+      }
+      const isAdmin = payload.isAdmin;
+      user.isAdmin = isAdmin;
+      return done(null, user);
+    } catch (error) {
+      return done(error);
     }
-    const isAdmin = payload.isAdmin;
-    user.isAdmin = isAdmin;
-    return done(null, user);
   }
 );
 module.exports = { localStrategy, jwtStrategy };

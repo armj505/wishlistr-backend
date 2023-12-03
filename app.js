@@ -16,7 +16,7 @@ const app = express();
 const { localStrategy, jwtStrategy } = require("./middlewares/passport");
 
 app.use(express.json());
-
+app.use(cors());
 app.use(morgan("dev"));
 app.use(passport.initialize());
 passport.use("local", localStrategy);

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../../middlewares/mutler");
+const upload = require("../../middlewares/upload");
 const passport = require("passport");
 const {
   register,

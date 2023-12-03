@@ -2,16 +2,13 @@ const { model, Schema } = require("mongoose");
 const corn = require("node-cron");
 const itemSchema = new Schema({
   name: String,
-  brand: String,
+  brand: { type: Schema.Types.ObjectId, ref: "Brand" },
   vendor: String,
   description: String,
   price: Number,
   imageURL: String,
-  isHighlighted: { type: Boolean, default: false },
-  isFulfilled: { type: Boolean, default: false },
-  Interactions: String, // Don't know what does that mean
   wishList: { type: Schema.Types.ObjectId, ref: "WishList" },
-  subCategory: String, // Don't know what does that mean
+  subCategory: { type: Schema.Types.ObjectId, ref: "SubCategory" },
   preferences: {
     size: String,
     color: String,
