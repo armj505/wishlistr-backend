@@ -2,6 +2,7 @@ const User = require("../../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const WishList = require("../../models/WishList");
 require("dotenv").config();
 
 const hashPassword = async (password) => {
@@ -12,7 +13,7 @@ const hashPassword = async (password) => {
 const generateToken = (user) => {
   const payload = {
     _id: user._id,
-    phoneNumber: user.phoneNumber,
+    email: user.email,
     isAdmin: user.isAdmin,
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -49,20 +50,23 @@ const sendVerificationEmail = async (email, token) => {
 };
 exports.register = async (req, res, next) => {
   try {
-    const existingPhoneNumber = await User.findOne({
-      phoneNumber: req.body.phoneNumber,
+    const existingEmail = await User.findOne({
+      email: req.body.email,
     });
-    if (existingPhoneNumber) {
-      return res
-        .status(400)
-        .json({ error: "This phone number is already in use" });
+    if (existingEmail) {
+      return res.status(400).json({ error: "This Email is already in use" });
     }
     req.body.password = await hashPassword(req.body.password);
-    if (req.file) {
-      req.body.image = req.file.path;
-    }
+
     req.body.isAdmin = false;
     const newUser = await User.create(req.body);
+    const defaultWishList = await WishList.create({
+      name: "Default List",
+      user: newUser._id,
+      isDefaultList: true,
+    });
+    newUser.wishLists.push(defaultWishList._id);
+
     const token = generateToken(newUser);
     const verificationToken = generateVerificationToken();
     newUser.emailVerificationToken = verificationToken;
@@ -112,18 +116,19 @@ exports.verifyEmail = async (req, res, next) => {
 ////////////////////////////////////////////////////////////////////
 exports.signIn = async (req, res, next) => {
   try {
-    // const isEmailVerified = req.user.isEmailVerified;
-    // if (!isEmailVerified) {
-    //   return res.status(403).json("Your email isn't verified yet"); // This feature is temorarily suspended
-    // }
+    const isEmailVerified = req.user.isEmailVerified;
+    if (!isEmailVerified) {
+      return res.status(403).json("Your email isn't verified yet");
+    }
     const token = generateToken(req.user);
 
-    // res.status(200).json({ token, isEmailVerified }); //This feature is temorarily suspended
+    res.status(200).json({ token, isEmailVerified });
     res.status(200).json({ token });
   } catch (error) {
     next(error);
   }
 };
+
 exports.changePassword = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
@@ -148,6 +153,7 @@ exports.changePassword = async (req, res, next) => {
     next(error);
   }
 };
+
 exports.changePhoneNumber = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
@@ -200,6 +206,7 @@ exports.forgotPassword = async (req, res, next) => {
     next(error);
   }
 };
+
 exports.resetPassword = async (req, res, next) => {
   try {
     const { resetToken, password } = req.body;
