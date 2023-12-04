@@ -1,25 +1,60 @@
 const express = require("express");
+const isAdmin = require("../../../middlewares/isAdmin");
+const passport = require("passport");
 const {
   createCategory,
   getAllCategories,
   getCategoryById,
   updateCategory,
   deleteCategory,
+  createSubCategory,
+  updateSubCategory,
+  deleteSubCategory,
 } = require("./category.controllers");
 const router = express.Router();
 
 // TO DO - Add isAdmin middleware
 
 // Category
-router.post("/", createCategory);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  createCategory
+);
 router.get("/", getAllCategories);
 router.get("/:categoryId", getCategoryById);
-router.put("/:categoryId", updateCategory);
-router.delete("/:categoryId", deleteCategory);
+router.put(
+  "/:categoryId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  updateCategory
+);
+router.delete(
+  "/:categoryId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  deleteCategory
+);
 
 // Sub-category
-router.post("/:categoryId/");
-router.put("/subcategory/:subcategoryId");
-router.delete("/subcategory/:subcategoryId");
+router.post(
+  "/:categoryId/",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  createSubCategory
+);
+router.put(
+  "/subcategory/:subcategoryId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  updateSubCategory
+);
+router.delete(
+  "/subcategory/:subcategoryId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  deleteSubCategory
+);
 
 module.exports = router;

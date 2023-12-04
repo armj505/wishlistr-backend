@@ -1,4 +1,6 @@
 const express = require("express");
+const isAdmin = require("../../../middlewares/isAdmin");
+const passport = require("passport");
 const {
   createBrand,
   getAllBrands,
@@ -9,10 +11,25 @@ const {
 const router = express.Router();
 
 // TO DO - Add isAdmin middleware
-router.post("/", createBrand);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  createBrand
+);
 router.get("/", getAllBrands);
 router.get("/:brandId", getBrandById);
-router.put("/:brandId", updateBrand);
-router.delete("/:brandId", deleteBrand);
+router.put(
+  "/:brandId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  updateBrand
+);
+router.delete(
+  "/:brandId",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  deleteBrand
+);
 
 module.exports = router;

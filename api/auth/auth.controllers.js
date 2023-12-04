@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const WishList = require("../../models/WishList");
 require("dotenv").config();
 
+// token generation
 const hashPassword = async (password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   return hashedPassword;
@@ -22,7 +23,8 @@ const generateToken = (user) => {
 
   return token;
 };
-//////////////////////////////////////////////////////////////////////
+
+// E-mail verification
 const generateVerificationToken = () => {
   return require("crypto").randomBytes(32).toString("hex");
 };
@@ -48,6 +50,8 @@ const sendVerificationEmail = async (email, token) => {
 
   return transporter.sendMail(mailOptions);
 };
+
+// create user
 exports.register = async (req, res, next) => {
   try {
     const existingEmail = await User.findOne({
