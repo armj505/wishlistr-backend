@@ -10,6 +10,7 @@ const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
 const passport = require("passport");
+const profile = require("./api/profile/routes");
 
 const port = 7000;
 const app = express();
@@ -25,7 +26,7 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", wishListRoutes);
 app.use("/api", itemRoutes);
-
+app.use("/api", profile);
 app.use("/media", express.static(path.join(__dirname, "media")));
 
 app.use(errorHandler);
