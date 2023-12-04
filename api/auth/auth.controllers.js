@@ -85,6 +85,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
+// verify email
 exports.verifyEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
@@ -117,7 +118,8 @@ exports.verifyEmail = async (req, res, next) => {
     next(error);
   }
 };
-////////////////////////////////////////////////////////////////////
+
+// sign in
 exports.signIn = async (req, res, next) => {
   try {
     const isEmailVerified = req.user.isEmailVerified;

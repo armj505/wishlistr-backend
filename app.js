@@ -25,6 +25,7 @@ app.use(morgan("dev"));
 app.use(passport.initialize());
 passport.use("local", localStrategy);
 passport.use("jwt", jwtStrategy);
+
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", wishListRoutes);
