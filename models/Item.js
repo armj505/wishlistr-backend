@@ -19,7 +19,7 @@ const Item = model("Item", itemSchema);
 corn.schedule("*/2 * * * *", async () => {
   try {
     await Item.updateMany({}, { $set: { trendValue: 0 } });
-    console.log("reset every 2 minutes");
+    console.log(`reset every 2 minutes....`);
   } catch (error) {
     console.log(`TrendValue resting error ${error.message}`);
   }

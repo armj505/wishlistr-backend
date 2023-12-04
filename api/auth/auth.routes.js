@@ -12,7 +12,7 @@ const {
   verifyEmail,
 } = require("./auth.controllers");
 
-router.post("/auth/register", upload.single("image"), register);
+router.post("/auth/register", register);
 router.post(
   "/auth/signIn",
   passport.authenticate("local", { session: false }),

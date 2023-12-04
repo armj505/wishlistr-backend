@@ -25,7 +25,7 @@ exports.createWishList = async (req, res, next) => {
 exports.viewMyWishList = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
-    const wishList = await WishList.find();
+    const wishList = await WishList.find().populate("items.item");
     if (!wishList) {
       return res.status(404).json("The user hasn't added any wishList yet");
     }
@@ -58,7 +58,7 @@ exports.addItemtoList = async (req, res, next) => {
   try {
     const { wishListId } = req.params;
     const { itemId } = req.params;
-    const { preferences } = req.body;
+
     const wishList = await WishList.findById(wishListId);
     if (!wishList) {
       return res
@@ -74,11 +74,12 @@ exports.addItemtoList = async (req, res, next) => {
         .status(403)
         .json("You're not allowed to add item to this list");
     }
+
     wishList.items.push({
-      itemId,
-      preferences,
+      item: itemId,
+      isHighlighted: false,
+      isFulfilled: false,
     });
-    wishList.items.push(itemId);
     await wishList.save();
     if (item) {
       item.trendValue = (item.trendValue || 0) + 1;
