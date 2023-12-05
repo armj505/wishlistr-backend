@@ -1,5 +1,5 @@
 const express = require("express");
-const isAdmin = require("../../../middlewares/isAdmin");
+const { isAdmin } = require("../../../middlewares/isAdmin");
 const passport = require("passport");
 const {
   createBrand,
@@ -10,7 +10,6 @@ const {
 } = require("./brand.controllers");
 const router = express.Router();
 
-// TO DO - Add isAdmin middleware
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),

@@ -1,5 +1,5 @@
 const express = require("express");
-const isAdmin = require("../../../middlewares/isAdmin");
+const { isAdmin } = require("../../../middlewares/isAdmin");
 const passport = require("passport");
 const {
   createCategory,
@@ -12,8 +12,6 @@ const {
   deleteSubCategory,
 } = require("./category.controllers");
 const router = express.Router();
-
-// TO DO - Add isAdmin middleware
 
 // Category
 router.post(

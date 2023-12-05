@@ -1,21 +1,22 @@
 const Item = require("../../models/Item");
 const WishList = require("../../models/WishList");
 
-exports.createItem = async (req, res, next) => {
-  //Delete it later. Isn't needed
-  try {
-    const item = await Item.create(req.body);
-    res.status(201).json(item);
-  } catch (error) {
-    next(error);
-  }
-};
+// exports.createItem = async (req, res, next) => {
+//   //Delete it later. Isn't needed
+//   try {
+//     const item = await Item.create(req.body);
+//     res.status(201).json(item);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 exports.viewItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
     const item = await Item.findById(itemId).populate({
       path: "vendor",
-      select: "name brand price imageURL description",
+      select: "name brand price imageURL description trendValue",
     });
     if (!item) {
       return res.status(404).json("The item isn't found");
@@ -36,8 +37,9 @@ exports.getAllItems = async (req, res, next) => {
     next(error);
   }
 };
+
+// Should've done in the wishList controllers/routes
 exports.removeItemFromList = async (req, res, next) => {
-  // Should've done in the wishList controllers/routes
   try {
     req.body.user = req.user._id;
     const { itemId, wishListId } = req.params;
@@ -59,6 +61,23 @@ exports.removeItemFromList = async (req, res, next) => {
       .json(
         `The item: ${item.name} has been removed from your ${wishList.name} successfully`
       );
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateItem = async (req, res, next) => {
+  try {
+    await Item.findByIdAndUpdate(req.params.itemId);
+    res.status(200).json({ message: "Item Updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+exports.deleteItem = async (req, res, next) => {
+  try {
+    await Item.findByIdAndDelete(req.params.itemId);
+    res.status(200).json({ message: "Item Deleted" });
   } catch (error) {
     next(error);
   }

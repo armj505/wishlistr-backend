@@ -14,11 +14,11 @@ exports.createWishList = async (req, res, next) => {
 
     const newWishList = await WishList.create(req.body);
     await req.user.updateOne({ $push: { wishLists: newWishList } });
-    res
+    return res
       .status(201)
       .json(`The wishList has been created successfully by: ${req.user.email}`); // Replace it later with user's name
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -29,9 +29,9 @@ exports.viewMyWishList = async (req, res, next) => {
     if (!wishList) {
       return res.status(404).json("The user hasn't added any wishList yet");
     }
-    res.status(200).json(wishList);
+    return res.status(200).json(wishList);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -48,9 +48,9 @@ exports.deleteMyList = async (req, res, next) => {
         .json("You dont't have the permission to delete this list");
     }
     await wishList.deleteOne();
-    res.status(200).json("Your wish list has been deleted");
+    return res.status(200).json("Your wish list has been deleted");
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -85,13 +85,13 @@ exports.addItemtoList = async (req, res, next) => {
       item.trendValue = (item.trendValue || 0) + 1;
     }
     await item.save();
-    res
+    return res
       .status(200)
       .json(
         `The item: ${item.name} has been added to your ${wishList.name} wishList`
       );
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -105,7 +105,7 @@ exports.getOneList = async (req, res, next) => {
     }
     res.status(200).json(wishList);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -129,9 +129,9 @@ exports.generateShareableLink = async (req, res, next) => {
        JavaScript object or value to a JSON (JavaScript Object Notation) string.*/,
     });
     const sharableLink = `share/whishList?${queryParams.toString()}`;
-    res.status(201).json(sharableLink);
+    return res.status(201).json(sharableLink);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 

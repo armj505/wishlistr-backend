@@ -1,5 +1,4 @@
 const Brand = require("../../../models/Brand");
-const User = require("../../../models/User");
 
 // Get all brands
 exports.getAllBrands = async (req, res, next) => {
@@ -14,7 +13,7 @@ exports.getAllBrands = async (req, res, next) => {
 // Get one brand
 exports.getBrandById = async (req, res, next) => {
   try {
-    const brand = await Brand.findById(req.params.brandId);
+    const brand = await Brand.findById(req.params.brandId).populate("items");
     return res.status(200).json(brand);
   } catch (error) {
     return next(error);

@@ -12,35 +12,35 @@ const {
 } = require("./wishList.controller");
 
 router.post(
-  "/wishList",
+  "/",
   passport.authenticate("jwt", { session: false }),
   createWishList
 );
 
 router.get(
-  "/wishList",
+  "/",
   passport.authenticate("jwt", { session: false }),
   viewMyWishList
 );
 
 router.delete(
-  "/wishList/:wishListId",
+  "/:wishListId",
   passport.authenticate("jwt", { session: false }),
   deleteMyList
 );
 
 router.put(
-  "/wishList/:wishListId/:itemId",
+  "/:wishListId/:itemId",
   passport.authenticate("jwt", { session: false }),
   addItemtoList
 );
 router.get(
-  "/wishList/:wishListId",
+  "/:wishListId",
   passport.authenticate("jwt", { session: false }),
   getOneList
 );
 router.post(
-  "/wishList/:wishListId/generate-link",
+  "/:wishListId/generate-link",
   passport.authenticate("jwt", { session: false }),
   generateShareableLink
 );

@@ -33,15 +33,16 @@ const sendVerificationEmail = async (email, token) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "foodiesadm23@gmail.com",
-      pass: "iknu stje slet prtf",
+      user: process.env.EMAIL,
+      pass: process.env.PASS,
     },
   });
 
+  // TO DO - Change Verification Link
   const verificationLink = `http://localhost:7000/api/verify-email?token=${token}`;
 
   const mailOptions = {
-    from: "foodiesadm23@gmail.com",
+    from: process.env.EMAIL,
     to: email,
     subject: "Verify Your Email Address",
     text: `Click the following link to verify your email address: ${verificationLink}`,
@@ -65,7 +66,7 @@ exports.register = async (req, res, next) => {
     req.body.isAdmin = false;
     const newUser = await User.create(req.body);
     const defaultWishList = await WishList.create({
-      name: "Default List",
+      name: "Favorites",
       user: newUser._id,
       isDefaultList: true,
     });
@@ -122,10 +123,10 @@ exports.verifyEmail = async (req, res, next) => {
 // sign in
 exports.signIn = async (req, res, next) => {
   try {
-    const isEmailVerified = req.user.isEmailVerified;
-    if (!isEmailVerified) {
-      return res.status(403).json("Your email isn't verified yet");
-    }
+    // const isEmailVerified = req.user.isEmailVerified;
+    // if (!isEmailVerified) {
+    //   return res.status(403).json("Your email isn't verified yet");
+    // }
     const token = generateToken(req.user);
 
     res.status(200).json({ token, isEmailVerified });
@@ -137,7 +138,6 @@ exports.signIn = async (req, res, next) => {
 
 exports.changePassword = async (req, res, next) => {
   try {
-    req.body.user = req.user._id;
     const user = await User.findOne({ _id: req.user._id });
     if (!user) {
       return res.status(404).json("The user isn't found");
@@ -189,7 +189,7 @@ exports.forgotPassword = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
     const resetToken = jwt.sign({ _id: user._id }, secretKey, {
-      expiresIn: "24h",
+      expiresIn: "1h",
     });
     user.resetToken = resetToken;
     user.resetTokenExpiration = new Date(Date.now() + 3600000);
@@ -198,8 +198,8 @@ exports.forgotPassword = async (req, res, next) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "foodiesadm23@gmail.com",
-        pass: "iknu stje slet prtf",
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
       },
     });
     transporter.sendMail({

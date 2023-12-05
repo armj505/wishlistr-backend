@@ -6,4 +6,4 @@ const brandSchema = new Schema({
   items: [{ type: Schema.Types.ObjectId, ref: "Item" }],
 });
 
-module.exports = model("Category", brandSchema);
+module.exports = model("Brand", brandSchema);

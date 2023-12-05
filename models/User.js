@@ -21,6 +21,7 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
     validate: function (input) {
+      // TO TEST
       /* return true only if the input is a valid date, AND is 
     greater than or equal to the current date/time */
       return typeof new Date(input) === "date" && new Date(input) >= new Date();

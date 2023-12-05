@@ -30,6 +30,6 @@ router.put(
   changePhoneNumber
 );
 router.get("/verify-email", verifyEmail);
-router.post("/auth/forgot-password", forgotPassword);
-router.post("/auth/reset-password/:resetToken", resetPassword);
+router.post("forgot-password", forgotPassword);
+router.post("reset-password/:resetToken", resetPassword);
 module.exports = router;

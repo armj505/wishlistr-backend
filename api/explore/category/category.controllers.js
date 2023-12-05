@@ -15,7 +15,9 @@ exports.getAllCategories = async (req, res, next) => {
 // Get one category
 exports.getCategoryById = async (req, res, next) => {
   try {
-    const category = await Category.findById(req.params.categoryId);
+    const category = await Category.findById(req.params.categoryId)
+      .populate("subCategories")
+      .populate("items");
     return res.status(200).json(category);
   } catch (error) {
     return next(error);

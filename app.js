@@ -14,6 +14,7 @@ const wishListRoutes = require("./api/wishList/wishList.routes");
 const itemRoutes = require("./api/item/item.routes");
 const categoryRoutes = require("./api/explore/category/category.routes");
 const brandRoutes = require("./api/explore/brand/brand.routes");
+const profileRoutes = require("./api/profile/profile.routes");
 
 const path = require("path");
 const port = 7000;
@@ -26,14 +27,14 @@ app.use(passport.initialize());
 passport.use("local", localStrategy);
 passport.use("jwt", jwtStrategy);
 
-app.use("/api", authRoutes);
-app.use("/api", userRoutes);
-app.use("/api", wishListRoutes);
-app.use("/api", itemRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/wishlist", wishListRoutes);
+app.use("/api/item", itemRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/brand", brandRoutes);
+app.use("/api/profile", profileRoutes);
 
-app.use("/api", profile);
 app.use("/media", express.static(path.join(__dirname, "media")));
 
 app.use(errorHandler);
