@@ -15,6 +15,7 @@ const itemSchema = new Schema({
   },
   trendValue: { type: Number, default: 0 },
 });
+// Set decremeanting value instead of wiping
 const Item = model("Item", itemSchema);
 corn.schedule("*/2 * * * *", async () => {
   try {

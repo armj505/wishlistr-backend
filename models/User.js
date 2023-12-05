@@ -2,7 +2,13 @@ const { model, Schema } = require("mongoose");
 
 const userSchema = new Schema({
   phoneNumber: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
   password: { type: String, required: true },
   image: String,
   isAdmin: { type: Boolean, default: false },
@@ -11,7 +17,7 @@ const userSchema = new Schema({
   emailVerificationToken: String,
   emailVerificationTokenExp: Date,
 
-  dateJoined: { type: Date, default: () => new Date() },
+  dateJoined: { type: Date, default: () => new Date(), immutable: true },
   dateOfBirth: {
     type: Date,
     validate: function (input) {

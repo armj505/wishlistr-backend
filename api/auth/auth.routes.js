@@ -12,20 +12,20 @@ const {
   verifyEmail,
 } = require("./auth.controllers");
 
-router.post("/auth/register", register);
+router.post("/register", register);
 router.post(
-  "/auth/signIn",
+  "/signIn",
   passport.authenticate("local", { session: false }),
   signIn
 );
 router.put(
-  "/auth/changePassword",
+  "/changePassword",
   passport.authenticate("jwt", { session: false }),
   changePassword
 );
 
 router.put(
-  "/auth/changeNumber",
+  "/changeNumber",
   passport.authenticate("jwt", { session: false }),
   changePhoneNumber
 );

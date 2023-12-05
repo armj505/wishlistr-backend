@@ -9,5 +9,5 @@ const myGiftSchema = new Schema(
   },
   { timestamps: true }
 );
-
+// Check if CreatedAt is working
 module.exports = model("Gift", myGiftSchema);
