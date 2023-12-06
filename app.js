@@ -39,6 +39,6 @@ app.use("/media", express.static(path.join(__dirname, "media")));
 app.use(errorHandler);
 app.use(notFound);
 connection();
-app.listen(8080, () => {
-  console.log(`The app is running on port ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`The app is running on port ${process.env.PORT}`);
 });
