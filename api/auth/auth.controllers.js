@@ -39,7 +39,7 @@ const sendVerificationEmail = async (email, token) => {
   });
 
   // TO DO - Change Verification Link
-  const verificationLink = `http://localhost:7000/api/verify-email?token=${token}`;
+  const verificationLink = `http://localhost:7000/api/auth/verify-email?token=${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL,
@@ -129,7 +129,7 @@ exports.signIn = async (req, res, next) => {
     // }
     const token = generateToken(req.user);
 
-    res.status(200).json({ token, isEmailVerified });
+    // res.status(200).json({ token, isEmailVerified });
     res.status(200).json({ token });
   } catch (error) {
     next(error);
