@@ -39,7 +39,7 @@ const sendVerificationEmail = async (email, token) => {
   });
 
   // TO DO - Change Verification Link
-  const verificationLink = `http://localhost:7000/api/auth/verify-email?token=${token}`;
+  const verificationLink = `https://hammerhead-app-kz3f9.ondigitalocean.app/api/auth/verify-email?token=${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL,
@@ -54,6 +54,7 @@ const sendVerificationEmail = async (email, token) => {
 
 // create user
 exports.register = async (req, res, next) => {
+  console.log("HRLLO EOTOGMKLTGKLNT");
   try {
     const existingEmail = await User.findOne({
       email: req.body.email,
