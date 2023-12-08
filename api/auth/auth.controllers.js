@@ -54,7 +54,6 @@ const sendVerificationEmail = async (email, token) => {
 
 // create user
 exports.register = async (req, res, next) => {
-  console.log("HRLLO EOTOGMKLTGKLNT");
   try {
     const existingEmail = await User.findOne({
       email: req.body.email,
