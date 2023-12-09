@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const WishList = require("../../models/WishList");
+
 require("dotenv").config();
 
 // token generation
@@ -39,7 +40,7 @@ const sendVerificationEmail = async (email, token) => {
   });
 
   // TO DO - Change Verification Link
-  const verificationLink = `https://hammerhead-app-kz3f9.ondigitalocean.app/api/auth/verify-email?token=${token}`;
+  const verificationLink = `http://localhost:7000/api/auth/verify-email?token=${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL,
@@ -55,13 +56,17 @@ const sendVerificationEmail = async (email, token) => {
 // create user
 exports.register = async (req, res, next) => {
   try {
+    console.log("Received registration request:", req.body);
     const existingEmail = await User.findOne({
       email: req.body.email,
     });
     if (existingEmail) {
+      console.log("Email is available. Proceeding with registration.");
       return res.status(400).json({ error: "This Email is already in use" });
     }
+    console.log("Email is available. Proceeding with registration.");
     req.body.password = await hashPassword(req.body.password);
+    console.log("Hashed password and set isAdmin. Creating new user.");
 
     req.body.isAdmin = false;
     const newUser = await User.create(req.body);
@@ -70,18 +75,29 @@ exports.register = async (req, res, next) => {
       user: newUser._id,
       isDefaultList: true,
     });
+    console.log(
+      "User and default wishlist created. Updating user with wishlist."
+    );
+
     newUser.wishLists.push(defaultWishList._id);
 
     const token = generateToken(newUser);
     const verificationToken = generateVerificationToken();
+    console.log("Tokens generated. Updating user with tokens.");
+
     newUser.emailVerificationToken = verificationToken;
     newUser.emailVerificationTokenExp = new Date(
       Date.now() + 24 * 60 * 60 * 1000
     );
     await newUser.save();
     await sendVerificationEmail(newUser.email, verificationToken);
+    console.log(
+      "User saved and verification email sent. Responding to client."
+    );
+
     res.status(201).json({ token });
   } catch (error) {
+    console.error("Error during registration:", error);
     next(error);
   }
 };
@@ -123,19 +139,20 @@ exports.verifyEmail = async (req, res, next) => {
 // sign in
 exports.signIn = async (req, res, next) => {
   try {
-    // const isEmailVerified = req.user.isEmailVerified;
-    // if (!isEmailVerified) {
-    //   return res.status(403).json("Your email isn't verified yet");
-    // }
+    console.log("Received registration request:", req.body);
+    const isEmailVerified = req.user.isEmailVerified;
+
+    if (!isEmailVerified) {
+      return res.status(403).json({ error: "Your email isn't verified yet" });
+    }
+
     const token = generateToken(req.user);
 
-    // res.status(200).json({ token, isEmailVerified });
-    res.status(200).json({ token });
+    res.status(200).json({ token, isEmailVerified });
   } catch (error) {
     next(error);
   }
 };
-
 exports.changePassword = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
