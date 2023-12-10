@@ -7,13 +7,13 @@ const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
 
 const localStrategy = new LocalStrategy(
   {
-    usernameField: "email",
+    usernameField: "emailOrPhone",
   },
-  async (username, password, done) => {
+  async (emailOrPhone, password, done) => {
     try {
       const user = await User.findOne({
         // this lets user to authenticate using either email or username
-        $or: [{ phoneNumber: username }, { email: username }],
+        $or: [{ phoneNumber: emailOrPhone }, { email: emailOrPhone }],
       });
       if (!user) {
         return (
