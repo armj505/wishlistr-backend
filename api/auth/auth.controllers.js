@@ -232,7 +232,9 @@ exports.forgotPassword = async (req, res, next) => {
 
 exports.resetPassword = async (req, res, next) => {
   try {
-    const { resetToken, password } = req.body;
+    const { resetToken } = req.params;
+
+    const { password } = req.body;
 
     const user = await User.findOne({
       resetToken,
