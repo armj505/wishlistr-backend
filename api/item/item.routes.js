@@ -18,10 +18,10 @@ const router = express.Router();
 // );
 router.get(
   "/:itemId",
-  passport.authenticate("jwt", { session: false }),
+
   viewItem
 );
-router.get("/", passport.authenticate("jwt", { session: false }), getAllItems);
+router.get("/"), getAllItems;
 router.put(
   "/:itemId/:wishListId",
   passport.authenticate("jwt", { session: false }),
