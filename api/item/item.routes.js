@@ -18,7 +18,7 @@ const router = express.Router();
 // );
 router.get(
   "/:itemId",
-
+  passport.authenticate("jwt", { session: false }),
   viewItem
 );
 router.get("/"), getAllItems;
