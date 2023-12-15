@@ -13,3 +13,20 @@ exports.getMyProfile = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.updateMyProfile = async (req, res, next) => {
+  try {
+    req.body.user = req.user._id;
+    const user = await User.findOne({ _id: req.user._id });
+    if (!user) {
+      return res.status(404).json("The user is not found");
+    }
+    if (req.file) {
+      req.body.image = req.file.path;
+    }
+    await user.updateOne(req.body);
+    res.status(200).json("Successfully updated");
+  } catch (error) {
+    next(error);
+  }
+};

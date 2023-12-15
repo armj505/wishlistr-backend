@@ -13,7 +13,7 @@ const {
 const upload = require("../../middlewares/upload");
 const router = express.Router();
 router.post(
-  "/item",
+  "/",
   upload.single("image"),
   passport.authenticate("jwt", { session: false }),
   createItem
