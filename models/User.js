@@ -36,13 +36,12 @@ const userSchema = new Schema({
   gender: { type: String, default: "Not yet specified" },
 
   address: {
-    city: String,
-    residenceArea: String,
-    block: String,
-    street: String,
-    avenue: String,
-    house: String,
-    addNotes: String,
+    city: { type: String, default: "Kuwait" },
+    residenceArea: { type: String, default: "Kuwait" },
+    block: { type: String, default: "1" },
+    street: { String, default: "108" },
+    avenue: { type: String, default: "none" },
+    house: { type: String, default: "4" },
   },
   name: {
     firstName: { type: String, required: true },
