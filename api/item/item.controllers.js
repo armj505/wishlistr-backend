@@ -1,15 +1,18 @@
 const Item = require("../../models/Item");
 const WishList = require("../../models/WishList");
 
-// exports.createItem = async (req, res, next) => {
-//   //Delete it later. Isn't needed
-//   try {
-//     const item = await Item.create(req.body);
-//     res.status(201).json(item);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+exports.createItem = async (req, res, next) => {
+  //Delete it later. Isn't needed
+  try {
+    const item = await Item.create(req.body);
+    if (req.file) {
+      req.body.image = req.file.path;
+    }
+    res.status(201).json(item);
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.viewItem = async (req, res, next) => {
   try {
