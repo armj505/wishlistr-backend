@@ -33,12 +33,8 @@ const userSchema = new Schema({
     message: (input) =>
       `${input} must be greater than or equal to the current date!`,
   }, //data tem de ser superior a data atual,
-  gender: {
-    type: String,
-    required: false,
-    enum: ["male", "female"],
-    default: "Unspecified yet",
-  },
+  gender: { type: String, default: "Not yet specified" },
+
   address: {
     city: String,
     residenceArea: String,
