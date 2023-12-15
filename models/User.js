@@ -36,12 +36,12 @@ const userSchema = new Schema({
   gender: { type: String, default: "Not yet specified" },
 
   address: {
-    city: { type: String, default: "Kuwait" },
-    residenceArea: { type: String, default: "Kuwait" },
-    block: { type: String, default: "1" },
-    street: { String, default: "108" },
-    avenue: { type: String, default: "none" },
-    house: { type: String, default: "4" },
+    city: { type: String },
+    residenceArea: { type: String },
+    block: { type: String },
+    street: { String },
+    avenue: { type: String },
+    house: { type: String },
   },
   name: {
     firstName: { type: String, required: true },
@@ -52,6 +52,19 @@ const userSchema = new Schema({
 
   resetToken: String,
   resetTokenExpiration: Date,
+});
+userSchema.pre("save", function (next) {
+  if (!this.address) {
+    this.address = {
+      city: "Kuwait",
+      residenceArea: "Kuwait",
+      block: "1",
+      street: "108",
+      avenue: "none",
+      house: "4",
+    };
+  }
+  next();
 });
 
 module.exports = model("User", userSchema);
