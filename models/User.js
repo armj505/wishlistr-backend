@@ -22,15 +22,16 @@ const userSchema = new Schema({
   dateJoined: { type: Date, default: () => new Date(), immutable: true },
   dateOfBirth: {
     type: Date,
-    validate: function (input) {
-      // TO TEST
-      /* return true only if the input is a valid date, AND is 
-    greater than or equal to the current date/time */
-      return typeof new Date(input) === "date" && new Date(input) >= new Date();
-    },
-    message: (input) =>
-      `${input} must be greater than or equal to the current date!`,
-  }, //data tem de ser superior a data atual,
+  },
+  //   validate: function (input) {
+  //     // TO TEST
+  //     /* return true only if the input is a valid date, AND is
+  //   greater than or equal to the current date/time */
+  //     return typeof new Date(input) === "date" && new Date(input) >= new Date();
+  //   },
+  //   message: (input) =>
+  //     `${input} must be greater than or equal to the current date!`,
+  // }, //data tem de ser superior a data atual,
   gender: { type: String, default: "Not yet specified" },
 
   address: {
@@ -50,19 +51,6 @@ const userSchema = new Schema({
 
   resetToken: String,
   resetTokenExpiration: Date,
-});
-userSchema.pre("save", function (next) {
-  if (!this.address) {
-    this.address = {
-      city: "Kuwait",
-      residenceArea: "Kuwait",
-      block: "1",
-      street: "108",
-      avenue: "none",
-      house: "5",
-    };
-  }
-  next();
 });
 
 module.exports = model("User", userSchema);
