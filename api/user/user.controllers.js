@@ -42,7 +42,7 @@ exports.deleteAccount = async (req, res, next) => {
     if (!user._id.equals(req.user._id)) {
       return res.status(403).json("You're not allowed to make this action");
     }
-    await User.deleteOne();
+    await user.deleteOne();
     await WishList.deleteMany({ user: user._id });
     res.status(200).json("Account has been deleted");
   } catch (error) {
