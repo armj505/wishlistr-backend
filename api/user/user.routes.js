@@ -1,6 +1,10 @@
 const express = require("express");
 const passport = require("passport");
-const { getMyProfile, updateMyProfile } = require("./user.controllers");
+const {
+  getMyProfile,
+  updateMyProfile,
+  deleteAccount,
+} = require("./user.controllers");
 const upload = require("../../middlewares/upload");
 
 const router = express.Router();
@@ -17,5 +21,10 @@ router.put(
   upload.single("image"),
   passport.authenticate("jwt", { session: false }),
   updateMyProfile
+);
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  deleteAccount
 );
 module.exports = router;
