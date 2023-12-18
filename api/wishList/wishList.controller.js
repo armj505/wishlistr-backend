@@ -27,17 +27,15 @@ exports.viewMyWishList = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
     if (!user) {
-      return res.status(404).json("user is not found");
+      return res.status(404).json("User is not found");
     }
 
-    const wishList = await User.findOne(
-      { user: req.user._id },
-      "wishLists"
-    ).populate("items.item");
-    if (!wishList) {
+    const wishLists = await WishList.find({ user: req.user._id });
+    if (!wishLists || wishLists.length === 0) {
       return res.status(404).json("The user hasn't added any wishList yet");
     }
-    return res.status(200).json(wishList);
+
+    return res.status(200).json(wishLists);
   } catch (error) {
     return next(error);
   }
