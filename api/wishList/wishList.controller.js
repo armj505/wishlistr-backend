@@ -31,7 +31,7 @@ exports.viewMyWishList = async (req, res, next) => {
       return res.status(404).json("user is not found");
     }
 
-    const wishList = await WishList.find({ user: user._id }).populate(
+    const wishList = await WishList.find({ user: req.user._id }).populate(
       "items.item"
     );
     if (!wishList) {
