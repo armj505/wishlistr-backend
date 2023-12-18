@@ -25,7 +25,7 @@ exports.createWishList = async (req, res, next) => {
 exports.viewMyWishList = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
-    const wishList = await WishList.find({ _id: req.user._id }).populate(
+    const wishList = await WishList.find({ user: req.user._id }).populate(
       "items.item"
     );
     if (!wishList) {
