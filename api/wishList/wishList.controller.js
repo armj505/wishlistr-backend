@@ -1,6 +1,7 @@
 const WishList = require("../../models/WishList");
 const Item = require("../../models/Item");
 const { json } = require("express");
+const User = require("../../models/User");
 
 exports.createWishList = async (req, res, next) => {
   try {
@@ -25,7 +26,12 @@ exports.createWishList = async (req, res, next) => {
 exports.viewMyWishList = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
-    const wishList = await WishList.find({ user: req.user._id }).populate(
+    const user = await User.findOne({ _id: req.user._id });
+    if (!user) {
+      return res.status(404).json("user is not found");
+    }
+
+    const wishList = await WishList.find({ user: user._id }).populate(
       "items.item"
     );
     if (!wishList) {
