@@ -24,7 +24,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   viewItem
 );
-router.get("/"), getAllItems;
+router.get("/", passport.authenticate("jwt", { session: false }), getAllItems);
 router.put(
   "/:itemId/:wishListId",
   passport.authenticate("jwt", { session: false }),
