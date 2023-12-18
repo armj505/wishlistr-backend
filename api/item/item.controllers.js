@@ -24,11 +24,11 @@ exports.generateItem = async (req, res, next) => {
     if (!brand) {
       return res.status(404).json("Brand is not found");
     }
-    const item = await Item.create(req.body);
     if (req.file) {
-      item.image = req.file.path;
-      await item.save();
+      req.image = req.file.path;
     }
+    const item = await Item.create(req.body);
+
     await item.updateOne({ $push: { brand: brandId } });
     await brand.updateOne({ $push: { items: item._id } });
     res.status(201).json("Generated");
