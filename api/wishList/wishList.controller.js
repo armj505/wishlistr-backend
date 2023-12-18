@@ -25,7 +25,9 @@ exports.createWishList = async (req, res, next) => {
 exports.viewMyWishList = async (req, res, next) => {
   try {
     req.body.user = req.user._id;
-    const wishList = await WishList.find().populate("items.item");
+    const wishList = await WishList.find({ _id: req.user._id }).populate(
+      "items.item"
+    );
     if (!wishList) {
       return res.status(404).json("The user hasn't added any wishList yet");
     }

@@ -45,8 +45,8 @@ router.put(
 );
 router.post(
   "/generate/:brandId",
-  upload.single("image"),
   passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
   generateItem
 );
 // router.put(
