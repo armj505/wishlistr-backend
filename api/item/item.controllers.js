@@ -1,5 +1,6 @@
 const Item = require("../../models/Item");
 const WishList = require("../../models/WishList");
+const Brand = require("../../models/Brand");
 
 exports.createItem = async (req, res, next) => {
   //Delete it later. Isn't needed
@@ -11,6 +12,22 @@ exports.createItem = async (req, res, next) => {
     }
 
     res.status(201).json(item);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.generateItem = async (req, res, next) => {
+  try {
+    const { brandId } = req.params;
+    const brand = await Brand.findById(brandId);
+    if (!brand) {
+      return res.status(404).json("Brand is not found");
+    }
+    const item = await Item.create(req.body);
+    await item.updateOne({ $push: { brand: brandId } });
+    await brand.updateOne({ $push: { items: item._id } });
+    res.status(201).json("Generated");
   } catch (error) {
     next(error);
   }

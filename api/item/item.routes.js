@@ -9,6 +9,7 @@ const {
   removeItemFromList,
   updateItem,
   updateItemInList,
+  generateItem,
 } = require("./item.controllers");
 const upload = require("../../middlewares/upload");
 const router = express.Router();
@@ -41,6 +42,12 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   isAdmin,
   updateItem
+);
+router.post(
+  "/:brandId",
+  upload.single("image"),
+  passport.authenticate("jwt", { session: false }),
+  generateItem
 );
 // router.put(
 //   "/item/update-item/:itemId/:wishListId",
