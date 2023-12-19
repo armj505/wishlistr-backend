@@ -6,7 +6,7 @@ const itemSchema = new Schema({
   vendor: String,
   description: String,
   price: Number,
-  image: String,
+  file: String,
   wishList: { type: Schema.Types.ObjectId, ref: "WishList" },
   subCategory: { type: Schema.Types.ObjectId, ref: "SubCategory" },
   preferences: {
