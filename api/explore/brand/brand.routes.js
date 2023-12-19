@@ -13,7 +13,7 @@ const router = express.Router();
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-
+  isAdmin,
   createBrand
 );
 router.get("/", getAllBrands);
