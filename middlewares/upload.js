@@ -44,15 +44,24 @@
 // const upload = multer({
 //   storage,
 // });
-
-// module.exports = upload;
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "/src/my-images");
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname);
+const multerS3 = require("multer-s3");
+const aws = require("aws-sdk");
+const s3 = new aws.S3({
+  endpoint: "https://hammerhead-app-kz3f9.ondigitalocean.app",
+});
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "wishList-bucket",
+    acl: "public-read",
+    key: function (req, file, cb) {
+      cb(null, `${Date.now()}${file.originalname}`);
+    },
+  }),
+  fileFilter: function (req, file, cb) {},
+  limits: {
+    fileSize: 1024 * 1024 * 5,
   },
 });
+
+module.exports = upload;

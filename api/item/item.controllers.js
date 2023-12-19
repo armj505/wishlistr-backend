@@ -25,8 +25,10 @@ exports.generateItem = async (req, res, next) => {
       return res.status(404).json("Brand is not found");
     }
     if (req.file) {
-      req.body.file = req.file.path;
+      // Modify the path to use the DigitalOcean Spaces URL
+      req.body.file = `https://hammerhead-app-kz3f9.ondigitalocean.app/${req.file.filename}`;
     }
+
     const item = await Item.create(req.body);
 
     await item.updateOne({ $push: { brand: brandId } });
