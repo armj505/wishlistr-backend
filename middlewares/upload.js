@@ -1,5 +1,5 @@
 // // Importing path to manipulate file name and multer to setup our file upload
-// const multer = require("multer");
+const multer = require("multer");
 
 // // Setting up storage filename and destination
 // let storage = multer.diskStorage({
