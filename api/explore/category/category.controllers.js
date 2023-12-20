@@ -27,6 +27,7 @@ exports.getCategoryById = async (req, res, next) => {
 // Create a category - admin only
 exports.createCategory = async (req, res, next) => {
   try {
+    console.log(req.body);
     const newCategory = await Category.create(req.body);
     return res.status(201).json(newCategory);
   } catch (error) {
