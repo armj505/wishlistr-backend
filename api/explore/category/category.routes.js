@@ -17,7 +17,7 @@ const router = express.Router();
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  isAdmin,
+
   createCategory
 );
 router.get("/", getAllCategories);
