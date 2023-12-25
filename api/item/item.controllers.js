@@ -6,10 +6,6 @@ exports.createItem = async (req, res, next) => {
   //Delete it later. Isn't needed
   try {
     const item = await Item.create(req.body);
-    if (req.file) {
-      item.image = req.file.path;
-      await item.save();
-    }
 
     res.status(201).json(item);
   } catch (error) {

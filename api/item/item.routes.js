@@ -13,12 +13,12 @@ const {
 } = require("./item.controllers");
 const upload = require("../../middlewares/upload");
 const router = express.Router();
-// router.post(
-//   "/",
-//   upload.single("image"),
-//   passport.authenticate("jwt", { session: false }),
-//   createItem
-// );
+router.post(
+  "/",
+
+  passport.authenticate("jwt", { session: false }),
+  createItem
+);
 router.get(
   "/:itemId",
   passport.authenticate("jwt", { session: false }),
