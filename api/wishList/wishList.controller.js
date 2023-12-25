@@ -31,7 +31,9 @@ exports.viewMyWishList = async (req, res, next) => {
       return res.status(404).json("User is not found");
     }
 
-    const wishLists = await WishList.find({ user: req.user._id });
+    const wishLists = await WishList.find({ user: req.user._id }).populate(
+      "items"
+    );
     if (!wishLists || wishLists.length === 0) {
       return res.status(404).json("The user hasn't added any wishList yet");
     }
