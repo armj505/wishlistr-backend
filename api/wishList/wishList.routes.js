@@ -9,6 +9,7 @@ const {
   addItemtoList,
   getOneList,
   generateShareableLink,
+  updateListName,
 } = require("./wishList.controller");
 
 router.post(
@@ -43,5 +44,10 @@ router.post(
   "/:wishListId/generate-link",
   passport.authenticate("jwt", { session: false }),
   generateShareableLink
+);
+router.put(
+  "/:wishListId",
+  passport.authenticate("jwt", { session: false }),
+  updateListName
 );
 module.exports = router;

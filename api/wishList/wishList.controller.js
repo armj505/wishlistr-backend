@@ -115,7 +115,21 @@ exports.getOneList = async (req, res, next) => {
   }
 };
 
-////////////////////////////////////////////////
+exports.updateListName = async (req, res, next) => {
+  try {
+    const { wishListId } = req.params;
+    const wishList = await WishList.findById(wishListId);
+    if (!wishList) {
+      return res.status(404).json("The wishList isn't or no longer exist");
+    }
+    await wishList.updateOne(req.body.name);
+    return res.status(200).json("updated list name");
+  } catch (error) {
+    next(error);
+  }
+};
+
+/////////////////////////////////////////////////
 exports.generateShareableLink = async (req, res, next) => {
   //Under trial and testing
   try {
