@@ -2,6 +2,7 @@ const WishList = require("../../models/WishList");
 const Item = require("../../models/Item");
 const { json } = require("express");
 const User = require("../../models/User");
+const ShareableLink = require("../../models/ShareableLink");
 
 exports.createWishList = async (req, res, next) => {
   try {
@@ -128,7 +129,25 @@ exports.updateListName = async (req, res, next) => {
     next(error);
   }
 };
+exports.shareMyList = async (req, res, next) => {
+  try {
+    const { wishlistId } = req.params;
+    const wishList = await WishList.findById(wishlistId);
+    if (!wishList) {
+      return res.status(404).json({ error: "WishList not found" });
+    }
+    const shareableLink = `https://hammerhead-app-kz3f9.ondigitalocean.app/api/shared-wishlist?id=${wishlistId}`;
+    const sharedWishlist = new ShareableLink({
+      wishList: wishList._id,
+      shareableLink,
+    });
+    await sharedWishlist.save();
 
+    return res.status(200).json({ shareableLink });
+  } catch (error) {
+    next(error);
+  }
+};
 /////////////////////////////////////////////////
 exports.generateShareableLink = async (req, res, next) => {
   //Under trial and testing
