@@ -122,7 +122,7 @@ exports.updateListName = async (req, res, next) => {
     if (!wishList) {
       return res.status(404).json("The wishList isn't or no longer exist");
     }
-    await wishList.updateOne(req.body.name);
+    await wishList.updateOne({ name: req.body.name });
     return res.status(200).json("updated list name");
   } catch (error) {
     next(error);
