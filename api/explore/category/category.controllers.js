@@ -63,7 +63,7 @@ exports.deleteCategory = async (req, res, next) => {
 exports.createSubCategory = async (req, res, next) => {
   try {
     const { categoryId } = req.params;
-    const category = await findById(categoryId);
+    const category = await Category.findById(categoryId);
     if (!category) {
       res.status(404).json({ message: "Category not found" });
     }
