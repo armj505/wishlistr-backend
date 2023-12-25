@@ -62,7 +62,8 @@ exports.deleteCategory = async (req, res, next) => {
 // Create sub-category - admin only
 exports.createSubCategory = async (req, res, next) => {
   try {
-    const category = await findById(req.params.categoryId);
+    const { categoryId } = req.params;
+    const category = await findById(categoryId);
     if (!category) {
       res.status(404).json({ message: "Category not found" });
     }
