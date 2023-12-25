@@ -38,7 +38,7 @@ router.delete(
 
 // Sub-category
 router.post(
-  "/:categoryId/",
+  "/:categoryId",
   passport.authenticate("jwt", { session: false }),
   isAdmin,
   createSubCategory
