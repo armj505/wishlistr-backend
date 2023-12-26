@@ -61,4 +61,10 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   itemToSub
 );
+
+router.post(
+  "/new/:subCategoryId",
+  passport.authenticate("jwt", { session: false }),
+  newItem
+);
 module.exports = router;
