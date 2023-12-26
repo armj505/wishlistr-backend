@@ -11,6 +11,7 @@ const {
   updateItemInList,
   generateItem,
   itemToSub,
+  newItem,
 } = require("./item.controllers");
 const upload = require("../../middlewares/upload");
 const router = express.Router();
