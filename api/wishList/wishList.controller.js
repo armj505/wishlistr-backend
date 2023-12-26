@@ -111,7 +111,12 @@ exports.getOneList = async (req, res, next) => {
   // Should this action only be allowed to the owner
   try {
     const { wishListId } = req.params;
-    const wishList = await WishList.findById(wishListId);
+    const wishList = await WishList.findById(wishListId)
+      .populate({
+        path: "items",
+        populate: { path: "item", model: "Item" },
+      })
+      .exec();
     if (!wishList) {
       return res.status(404).json("The wishList isn't or no longer exist");
     }
