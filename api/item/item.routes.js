@@ -10,6 +10,7 @@ const {
   updateItem,
   updateItemInList,
   generateItem,
+  itemToSub,
 } = require("./item.controllers");
 const upload = require("../../middlewares/upload");
 const router = express.Router();
@@ -54,4 +55,10 @@ router.post(
 //   passport.authenticate("jwt", { session: false }),
 //   updateItemInList
 // );
+
+router.put(
+  "/:itemId/:subCategoryId",
+  passport.authenticate("jwt", { session: false }),
+  itemToSub
+);
 module.exports = router;

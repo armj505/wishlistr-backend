@@ -1,6 +1,7 @@
 const Item = require("../../models/Item");
 const WishList = require("../../models/WishList");
 const Brand = require("../../models/Brand");
+const SubCat = require("../../models/SubCategories");
 
 exports.createItem = async (req, res, next) => {
   //Delete it later. Isn't needed
@@ -101,6 +102,25 @@ exports.deleteItem = async (req, res, next) => {
   try {
     await Item.findByIdAndDelete(req.params.itemId);
     res.status(200).json({ message: "Item Deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.itemToSub = async (req, res, next) => {
+  try {
+    const { itemId, subCategoryId } = req.params;
+    const item = await Item.findById(itemId);
+    if (!item) {
+      return res.status(404).json("Item is not found");
+    }
+    const subCategory = await SubCat.findById(subCategoryId);
+    if (!subCategory) {
+      return res.status(404).json("The subCategory isn't exist");
+    }
+
+    await subCategory.updateOne({ $push: { items: itemId } });
+    res.status(200).json("Item has been added to subCategory");
   } catch (error) {
     next(error);
   }

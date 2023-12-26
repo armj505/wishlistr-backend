@@ -43,6 +43,7 @@ router.post(
   isAdmin,
   createSubCategory
 );
+
 router.put(
   "/subcategory/:subcategoryId",
   passport.authenticate("jwt", { session: false }),
