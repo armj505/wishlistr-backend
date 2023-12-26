@@ -125,6 +125,21 @@ exports.itemToSub = async (req, res, next) => {
     next(error);
   }
 };
+exports.newItem = async (req, res, next) => {
+  try {
+    const { subCategoryId } = req.params;
+    const subCategory = SubCat.findById(subCategoryId);
+    if (!subCategory) {
+      return res.status(404).json("SubCategory not found");
+    }
+    const item = await Item.create(req.body);
+    await subCategory.updateOne({ $push: { items: item._id } });
+    await item.updateOne({ $push: { subCategory: subCategoryId } });
+    res.status(201).json("created");
+  } catch (error) {
+    next(error);
+  }
+};
 // exports.updateItemInList = async (req, res, next) => {
 //   try {
 //     const { itemId, wishListId } = req.params;
