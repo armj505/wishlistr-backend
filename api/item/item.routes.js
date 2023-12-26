@@ -28,7 +28,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), getAllItems);
 router.put(
   "/:itemId/:wishListId",
   passport.authenticate("jwt", { session: false }),
-  isAdmin,
+
   removeItemFromList
 );
 router.delete(
