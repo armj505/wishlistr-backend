@@ -5,7 +5,7 @@ const SubCategory = require("../../../models/SubCategories");
 // Get all categories
 exports.getAllCategories = async (req, res, next) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().populate("subCategories");
     return res.status(200).json(categories);
   } catch (error) {
     return next(error);
