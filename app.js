@@ -21,15 +21,15 @@ const app = express();
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: ["http://192.168.8.106:8081", "http://localhost:3000"],
+// const corsOptions = {
+//   origin: ["http://192.168.8.106:8081", "http://localhost:3000"],
 
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(morgan("dev"));
 app.use(passport.initialize());
 passport.use("local", localStrategy);
