@@ -126,6 +126,24 @@ exports.getOneList = async (req, res, next) => {
   }
 };
 
+exports.getOnePublicList = async (req, res, next) => {
+  try {
+    const { wishListId } = req.params;
+    const wishList = await WishList.findById(wishListId)
+      .populate({
+        path: "items",
+        populate: { path: "item", model: "Item" },
+      })
+      .exec();
+    if (!wishList) {
+      return res.status(404).json("The wishList isn't or no longer exist");
+    }
+    res.status(200).json(wishList);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 exports.updateListName = async (req, res, next) => {
   try {
     const { wishListId } = req.params;
