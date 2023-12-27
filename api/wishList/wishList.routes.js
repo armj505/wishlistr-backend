@@ -11,6 +11,7 @@ const {
   generateShareableLink,
   updateListName,
   shareMyList,
+  getOnePublicList,
 } = require("./wishList.controller");
 
 router.post(
@@ -40,6 +41,12 @@ router.get(
   "/:wishListId",
   passport.authenticate("jwt", { session: false }),
   getOneList
+);
+
+router.get(
+  "/public/:wishListId",
+
+  getOnePublicList
 );
 
 router.put(
